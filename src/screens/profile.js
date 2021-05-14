@@ -1,25 +1,14 @@
 import React, {useState, useContext} from 'react';
-
-import {
-  Text,
-  View,
-  Button,
-  FlatList,
-  TextInput,
-  SafeAreaView,
-} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import { Text, View, } from 'react-native';
 import {ListItem} from 'react-native-elements';
-import Icon from 'react-native-vector-icons/Ionicons';
 
-import {shouldUseActivityState} from 'react-native-screens';
-
-import {AppContext} from '../context';
 
 const ProfileScreen = ({navigation, route}) => {
-  const context = useContext(AppContext);
-  const user =context.state.user;
+  const loginData = useSelector(state => state.todoListReducer.loginData);
+  const user = loginData.data.user;
   
-  let fields = Object.entries(context.state.user)
+  let fields = Object.entries(user)
       .filter((item) => item[0] != 'items');
 
   return (
