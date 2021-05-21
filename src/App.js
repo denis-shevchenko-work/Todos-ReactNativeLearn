@@ -7,37 +7,55 @@
  */
 
 import 'react-native-gesture-handler';
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useEffect, useState} from 'react';
+import { connect, useDispatch, useSelector } from 'react-redux';
+
 import type {Node} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import TodosScreen from './components/todo';
-import LoginScreen from './components/login';
-import ProfileScreen from './components/profile';
-import HomeScreen from './components/home';
+import TodosScreen from './screens/todo';
+import AuthenticateScreen from './screens/authenticate';
+import ProfileScreen from './screens/profile';
+import HomeScreen from './screens/home';
 import RNBootSplash from 'react-native-bootsplash';
 import {StyleSheet, Text, View, Button, SafeAreaView} from 'react-native';
 import {AppContext} from './context/index';
 
+
 const Stack = createStackNavigator();
 
-const App: () => Node = () => {
+const App: (props) => Node = (props) => {
+
   useEffect(() => {
     RNBootSplash.hide({fade: true});
   }, []);
 
-  const context = useContext(AppContext);
-
   return (
-      context.state.token ? 
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home">
-          <Stack.Screen name="Home" options={{title: 'Welcome'}} component={HomeScreen} />
-          <Stack.Screen name="Profile" options={{title: 'Todo List'}} component={ProfileScreen} />
-          <Stack.Screen name="Todos" options={{title: 'Todo List'}} component={TodosScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
-      : <LoginScreen />
+    <SafeAreaView style={{flex:1}}>
+      {props.todoListReducer.authenticated ? 
+         <NavigationContainer>
+         <Stack.Navigator initialRouteName="Home">
+           <Stack.Screen
+             name="Home"
+             options={{title: 'Welcome'}}
+             component={HomeScreen}
+           />
+           <Stack.Screen
+             name="Profile"
+             options={{title: 'Profile'}}
+             component={ProfileScreen}
+           />
+           <Stack.Screen
+             name="Todos"
+             options={{title: 'Todo List'}}
+             component={TodosScreen}
+           />
+         </Stack.Navigator>
+       </NavigationContainer>
+       :
+       <AuthenticateScreen />
+      }
+    </SafeAreaView>
   );
 };
 
@@ -60,4 +78,11 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+function mapStateToProps(state){
+  return {
+    todoListReducer: state.todoListReducer
+  }
+}
+
+
+export default connect(mapStateToProps)(App);
