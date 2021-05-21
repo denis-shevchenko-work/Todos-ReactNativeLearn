@@ -1,17 +1,16 @@
 import {
-    GET_TASKS_ALL,
-    ADD_TASK,
-    MARK_TASK_AS_DONE,
-    USER_REGISTER,
-    USER_LOGIN,
-    SET_AUTHENTICATED,
+  GET_TASKS_ALL,
+  ADD_TASK,
+  MARK_TASK_AS_DONE,
+  USER_REGISTER,
+  USER_LOGIN,
+  SET_AUTHENTICATED,
 } from '../types';
-
 
 const INITIAL_STATE = {
   authenticated: false,
-  taskList:{data:{data:[]}},
-}
+  taskList: {data: {data: []}},
+};
 
 export default function (state = INITIAL_STATE, action) {
   switch (action.type) {
@@ -22,7 +21,9 @@ export default function (state = INITIAL_STATE, action) {
     case ADD_TASK:
       return {...state, added: extractData(action.payload)};
     case USER_LOGIN:
-      return { ...state, loginData: extractData(action.payload),
+      return {
+        ...state,
+        loginData: extractData(action.payload),
         //authenticated: action.payload.status==200 && action.payload.data && action.payload.data.token && true
       };
     case SET_AUTHENTICATED:
@@ -32,9 +33,10 @@ export default function (state = INITIAL_STATE, action) {
   }
 }
 
-function extractData(payload) {
+function extractData(payload, dataFieldName) {
+  dataFieldName = dataFieldName || "data";
   return {
-    data: payload.data,
+    data: payload[dataFieldName],
     status: payload.status,
   };
 }

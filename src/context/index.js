@@ -1,5 +1,5 @@
 import React, {Component, PureComponent} from 'react';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 const AppContext = React.createContext();
 

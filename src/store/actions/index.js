@@ -1,13 +1,13 @@
 import {
-    GET_TASKS_ALL,
-    ADD_TASK,
-    MARK_TASK_AS_DONE,
-    USER_REGISTER,
-    USER_LOGIN,
-    SET_AUTHENTICATED,
+  GET_TASKS_ALL,
+  ADD_TASK,
+  MARK_TASK_AS_DONE,
+  USER_REGISTER,
+  USER_LOGIN,
+  SET_AUTHENTICATED,
 } from '../types';
 
-import * as api from '../api';
+import * as api from '../api/tasksApi';
 
 export function registerUser(values) {
   return {
@@ -16,12 +16,12 @@ export function registerUser(values) {
   };
 }
 
-export const loginUser = (values) => {
+export function loginUser (values) {
   return {
     type: USER_LOGIN,
     payload: api.userLogin(values),
   };
-}
+};
 
 export function setAuthenticated(value) {
   return {
@@ -50,4 +50,3 @@ export function addTask(description, token) {
     payload: api.addTask(description, token),
   };
 }
-
